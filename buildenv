@@ -1,8 +1,36 @@
-export ZOPEN_STABLE_DEPS="go_comp"
+export ZOPEN_STABLE_DEPS="comp_go comp_clang"
+export ZOPEN_STABLE_URL="https://github.com/bluecivet/parse-gotest.git"
+export ZOPEN_STABLE_TAG="v0.1.0"
 export ZOPEN_DEV_URL="https://github.com/bluecivet/parse-gotest"
-export ZOPEN_DEV_DEPS="go_comp"
-export ZOPEN_BUILD_LINE="DEV"
+export ZOPEN_DEV_DEPS="comp_go comp_clang" 
+export ZOPEN_BUILD_LINE="STABLE"
 export ZOPEN_CATEGORIES="utilities devops"
+export ZOPEN_COMP="CLANG"
+
+export ZOPEN_INSTALL="zopen_install"
+export ZOPEN_MAKE="skip"
+export ZOPEN_CONFIGURE="skip"
+
+
+zopen_init()
+{
+  export CGO_ENABLED=0
+  # Go installs binaries, so create the bin dir as well
+  export GOBIN=$ZOPEN_INSTALL_DIR/bin
+  export PATH=$PATH:$GOROOT/go-build-zos/bin
+  export _BPXK_AUTOCVT=ON
+  export _CEE_RUNOPTS="$_CEE_RUNOPTS FILETAG(AUTOCVT,AUTOTAG) POSIX(ON)"
+  export _TAG_REDIR_IN=txt
+  export _TAG_REDIR_ERR=txt
+  export _TAG_REDIR_OUT=txt
+}
+
+zopen_install()
+{
+  mkdir -p $ZOPEN_INSTALL_DIR/bin
+  go build 
+  mv ./parse-gotest $GOBIN
+}
 
 zopen_check_results()
 {
